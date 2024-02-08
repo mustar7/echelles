@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,46 +10,54 @@
 <body>
 <div id="resultat"></div>
 
-</body>
 <script type="module">
-    import {posiColor} from './modules/posiColor.js';
+    import { posiColor } from './modules/posiColor.js';
 
-    let data, 
-    
-        urlData = "https://raw.githubusercontent.com/mustar7/echelles/main/Donn%C3%A9es%20de%20la%20nappe%20phr%C3%A9atique.csv",
-        width = 600, height=100, widthLibTxt=100, svg,
-        pVal='Année',pLib='Mois',pFreq='Nombre de mesures mensuelles',
+    let urlData = "https://raw.githubusercontent.com/mustar7/echelles/main/Donn%C3%A9es%20de%20la%20nappe%20phr%C3%A9atique.csv",
+        width = 600, height = 100, widthLibTxt = 100,
+        pVal = 'Année', pLib = 'Mois', pFreq = 'Nombre de mesures mensuelles',
         interpolates = false;
     
-    d3.csv(urlData).then(rs=>{
-        console.log(rs);
-        data = setData(rs);
+    d3.csv(urlData, function(d) {
+        // Convertir les valeurs numériques de string à number
+        return {
+            ...d,
+            [pVal]: +d[pVal],
+            [pFreq]: +d[pFreq]
+        };
+    }).then(function(data) {
         console.log(data);
-        setGraph(data);
-    })
+        let processedData = setData(data);
+        console.log(processedData);
+        setGraph(processedData);
+    });
 
-    function setData(rs){
-        data = Array.from(d3.group(rs, d => d[pLib])).map(d=>{
-                    let extX = d3.extent(d[1], d=>d[pVal]),
-                        extY = d3.extent(d[1], d=>d[pFreq]),
-                        o = {'vals':d[1],
-                        'extX':[1,extX[1]],
-                        'scX':d3.scaleLinear().domain(extX).range([widthLibTxt, width-widthLibTxt]),
-                        'scY':d3.scaleLinear().domain(extY).range([0, height])
-                        };
-                        o[pLib]=d[0];
-                    return o;
-                });
-        return data;
+    function setData(rs) {
+        return Array.from(d3.group(rs, d => d[pLib]), ([key, value]) => {
+            let extX = d3.extent(value, d => d[pVal]),
+                extY = d3.extent(value, d => d[pFreq]),
+                o = {
+                    'vals': value,
+                    'extX': extX,
+                    'scX': d3.scaleLinear().domain(extX).range([widthLibTxt, width - widthLibTxt]),
+                    'scY': d3.scaleLinear().domain(extY).range([height, 0])
+                };
+            o[pLib] = key;
+            return o;
+        });
     }
 
-    function setGraph(data){
-        
-        let pc = new posiColor({'data':data,'cont':d3.select('#resultat')
-            , 'pVal':pVal,'pLib':pLib, 'pFreq':pFreq,'frequency':false
-            , 'interpolates':interpolates        
-        })
-    }    
-
+    function setGraph(data) {
+       
+        let pc = new posiColor({
+            'data': data,
+            'cont': d3.select('#resultat'),
+            'pVal': pVal,
+            'pLib': pLib,
+            'pFreq': pFreq,
+            'frequency': false,
+            'interpolates': interpolates
+        });
+    }
 </script>
 </html>
