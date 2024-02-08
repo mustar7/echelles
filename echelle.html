@@ -18,8 +18,7 @@
     
         urlData = "https://raw.githubusercontent.com/mustar7/echelles/main/Donn%C3%A9es%20de%20la%20nappe%20phr%C3%A9atique.csv",
         width = 600, height=100, widthLibTxt=100, svg,
-        pVal='année',pLib='mois',pFreq='Niveau de la nappe en mètres',
-        
+        pVal='Année',pLib='Mois',pFreq='Nombre de mesures mensuelles',
         interpolates = false;
     
     d3.csv(urlData).then(rs=>{
