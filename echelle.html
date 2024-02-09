@@ -44,8 +44,8 @@
         //cf. https://observablehq.com/@d3/d3-scaleband
         bandY = d3.scaleBand(data.map(d=>d[0]), [0, height]).paddingInner(0.2).paddingOuter(0.2);
         data = data.map(d=>{
-                    let extX = d3.extent(d[1], d=>d[Mois]),
-                        extY = d3.extent(d[1], d=>d[Nombre de mesures mensuelles]),
+                    let extX = d3.extent(d[1], d=>d[valX]),
+                        extY = d3.extent(d[1], d=>d[valY]),
                         o = {'vals':d[1],100,
                         'extX':[1,extX[1]],                        
                         //'scX':d3.scaleSymlog().domain(extX).range([widthLibTxt, width-widthLibTxt]),
