@@ -13,9 +13,9 @@
 <script type="module">
     import { posiColor } from './modules/posiColor.js';
 
-    let urlData = "https://raw.githubusercontent.com/mustar7/echelles/main/Donn%C3%A9es%20de%20la%20nappe%20phr%C3%A9atique.csv",
+    let urlData = "https://raw.githubusercontent.com/mustar7/echelles/main/DataMus.csv",
         width = 600, height = 100, widthLibTxt = 100,
-        pVal = 'Année', pLib = 'Mois', pFreq = 'Nombre de mesures mensuelles',
+        pVal = 'Annee', pLib = 'Mois', pFreq = 'Mesures',
         interpolates = false;
     
     d3.csv(urlData, function(d) {
